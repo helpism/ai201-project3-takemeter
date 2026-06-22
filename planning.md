@@ -47,22 +47,68 @@
 
 ## 4. Data Collection Plan
 
-* **Source Location:**
-* **Target Distribution:**
-* **Imbalance Strategy:**
+* **Source Location:** the subreddit [r/cars](https://www.reddit.com/r/cars/) 
+* **Target Distribution:** my target distribution is a **50-50-50** split for the labels.
+* **Imbalance Strategy:** if the label is underrepresented/imbalaced, i will add more data fo that specific label.
 
 ---
 
 ## 5. Evaluation Metrics
 
-* **Selected Metrics:**
-* **Reasoning:**
+* **Selected Metrics:** confusion metrix and classification report
+* **Reasoning:** Using an sklearn confusion matrix alongside a classification report is highly effective because it pairs an intuitive visual diagnostic with precise statistical metrics. the confusion matrix immediately exposes the exact direction of the model's mistakes and the classification report provides the mathematical proof via per-label precision, recall, and F1-scores.
 
 ---
 
 ## 6. Definition of Success
 
-* **Minimum Acceptable Threshold:**
+* **Overall Accuracy:** A minimum of **70% overall accuracy** on the test set. Because a random guesser on a 4-class problem yields 25%, achieving 70% proves the model is catching structural features rather than making baseline guesses.
+* **Per-class F1-Score:** At least **0.65 F1-score for every individual class**, with a specific emphasis on `technical_analysis` and `hot_take`. 
+* **Justification:** For a community moderation or filtering tool, the classifier needs to be reliable enough that users can confidently filter out noisy `hot_take` rants while highlighting deep `technical_analysis` threads without losing 30%+ of the relevant data to false positives or false negatives.
+---
+
+## 7. AI Tool Plan
+
+* **Label Stress-Testing:**
+* *Plan:* 
+1. **Post:** *"Everyone losing their minds over the new engine clearly doesn’t understand basic thermodynamics. It runs a 12.5:1 compression ratio on a tiny single scroll turbo. I don't care what the marketing team says, that thermal load is an absolute ticking time bomb. Any enthusiast buying this is an idiot who enjoys cracked ring lands at 40k miles."* 
+**Final Label:** `hot_take`
+
+2. **Post:** *"Looking at the packaging of the current chassis, if the upcoming 2028 hybrid refresh keeps the same rear subframe geometry, they literally cannot fit a dual-motor setup without changing the multi-link suspension to a trailing arm. Because trailing arms alter the camber curve under compression, the new hybrid variant will inherently have worse cornering stability than the current ICE model."* 
+**Final Label:** `speculative`
+
+3. **Post:** *"I’ve driven manual transmission sports cars for 15 years, but I just spent a week tracking my buddy's new PDK Porsche. Anyone who says manuals are 'more engaging' is coping out of their mind. The instant shifts actually let you focus on the physics of the car. Manuals are objectively dead, and purists are just holding back automotive progress because they're scared of change."* 
+**Final Label:** `hot_take`
+
+4. **Post:** *"As someone who has put 60,000 daily miles on the current generation, I know exactly where the weak points are. The cabin NVH (noise, vibration, harshness) is awful on the highway. Since the leaked dealer sheets show the next-gen model is keeping the exact same acoustic glass and floor pan insulation, I can guarantee you the new model is going to be just as exhausting to drive on long road trips."* 
+**Final Label:** `speculative`
+
+5. **Post:** *"My MK7 GTI threw a cel today for underboost. Hooked up the OBD scanner and logged the wastegate voltage—it was reading 4.2V at idle instead of the factory spec 3.5V, meaning the actuator arm is wearing out. If you own one of these and notice a slight lag around 3k RPM like I did, check your voltage sweeps before replacing the whole turbo."* 
+**Final Label:** `technical_analysis`
+
+6. **Post:** *"EV start-ups are a cancer on the industry. Mark my words, by 2030 every single one of these companies except Tesla will file for bankruptcy, leaving buyers with 5,000-pound paperweights. The legacy automakers are just letting them play sandbox right now before they step in and completely wipe them off the map."* 
+**Final Label:** `hot_take`
+
+7. **Post:** *"I just traded in my CVT crossover because the rubber-band effect made me want to drive into a wall. CVTs use steel bands on variable pulleys, which inherently limits torque capacity to around 250 lb-ft before slipping. Anyone who buys a CVT car is a mindless commuter who doesn't care about engineering and deserves to have their transmission blow up at 80k."* 
+**Final Label:** `hot_take`
+
+8. **Post:** *"Rumor has it that the 2029 Miata will feature a 0.5-liter 2-cylinder engine wrapped in wet cardboard to save weight, because according to internet engineers, anything over 2,000 lbs is basically a commercial semi-truck. I predict it will sell zero units because purists won't be able to fit their massive egos inside."*  
+**Final Label:** `hot_take`
+
+* **Annotation Assistance:**
+* *Plan:* Yes, i will you an llm to pre label. First i will give it the definations and examples in my planning.md file, then i will ask it to pre-label the posts from [r/cars](https://www.reddit.com/r/cars/). Afterwards, i will cross-check to make sure that no mistakes were made.
+
+
+* **Failure Analysis:**
+* **Failure Analysis:**
+    * *Plan:* Once evaluation is complete, I will collect all rows from the test set where the fine-tuned model's prediction did not match the true label. I will feed these mismatched pairs (consisting of the raw Reddit text, the true label, and the model's incorrect prediction) into Groq. 
+    * I will instruct the LLM to analyze the errors for systemic linguistic patterns, specifically looking for:
+        1. **Sarcasm/Hyperbole:** Is the model interpreting a sarcastic, dramatized post as a literal `technical_analysis` or `speculative` statement rather than a `hot_take`?
+        2. **Keyword Blinding:** Is the model misclassifying posts simply because they contain specific heavy automotive keywords (e.g., automatically labeling any post containing "B58 engine" or "turbo" as `technical_analysis`, even if it's an emotional rant)?
+        3. **Length Bias:** Is it defaulting short posts to `hot_take` and long posts to `technical_analysis`?
+    * *Verification:* I will not blindly trust the LLM's summary; I will manually read through the flagged error clusters to verify if the suggested pattern is statistically prevalent across the test set before adding it to my final README evaluation report.
+
+
 
 ---
 
