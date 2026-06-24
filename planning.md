@@ -114,6 +114,8 @@
 
 ## 8. Hard Annotation Decisions (To be tracked during Milestone 3)
 
-1. **Post:** *"*...*"* $\rightarrow$ **Final Label:** [Label] because...
-2. **Post:** *"*...*"* $\rightarrow$ **Final Label:** [Label] because...
-3. **Post:** *"*...*"* $\rightarrow$ **Final Label:** [Label] because...
+1. **Post:** *"I'm holding my breath until I see a production STI Hatchback that I can buy in the states."* $\rightarrow$ **Final Label:** `speculative` because even though it's written in first person, the subject is a car that doesn't exist yet — it's anticipation about a future product, not a reflection on personal experience.
+
+2. **Post:** *"I'm sitting in a 14 wrx that's gone through 5 turbos because of an engineering flaw."* $\rightarrow$ **Final Label:** `testimonial` because I was initially torn between this and `hot_take`. The turbo failure claim sounds like a rant, but it's rooted in something that factually happened to that specific person's car. I landed on `testimonial` since the post is describing a real ownership experience rather than making a sweeping claim about all WRXs.
+
+3. **Post:** *"they literally cannot fit a dual-motor setup without changing the multi-link suspension... the new hybrid variant will inherently have worse cornering stability."* $\rightarrow$ **Final Label:** `speculative` because the engineering language made this feel like `technical_analysis` at first glance, but the entire argument is about an unreleased vehicle. The reasoning is mechanical but the subject is hypothetical, so speculative is the right call.
